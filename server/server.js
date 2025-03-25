@@ -1,6 +1,7 @@
 import express from "express"
 import "dotenv/config";
 import cookieParser from "cookie-parser";
+import cors from "cors"
 
 import { connectDB } from "./db/connection.db.js";
 
@@ -16,6 +17,13 @@ connectDB()
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
+app.use(
+    cors({
+        origin: [process.env.CLIENT_URL],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+    })
+);
 
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/message", messageRouter)
