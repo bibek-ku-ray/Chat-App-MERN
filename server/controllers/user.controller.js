@@ -127,3 +127,14 @@ export const getProfile = asyncHandler(async (req, res, next) => {
         data: user,
     });
 });
+
+export const getAllOtherUsers = asyncHandler(async (req, res, next) => {
+    // get all user excluding me 
+    const otherUsers = await User.find({ _id: { $ne: req.user.id } });
+
+    return res.status(200).json({
+        success: true,
+        message: "All other users fetched successfully",
+        data: otherUsers,
+    });
+});
