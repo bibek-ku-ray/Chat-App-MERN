@@ -6,6 +6,7 @@ import { connectDB } from "./db/connection.db.js";
 
 // routes
 import userRouter from "./routes/user.route.js";
+import messageRouter from "./routes/message.route.js"
 
 const app = express()
 const PORT  = process.env.PORT || 3001
@@ -17,6 +18,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 
 app.use("/api/v1/user", userRouter)
+app.use("/api/v1/message", messageRouter)
 
 // middleware
 import { errorMiddleware } from "./middlewares/error.middleware.js";
