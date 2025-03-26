@@ -1,18 +1,33 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUserThunk } from "../../store/slice/user/user.thunk";
 
 const Login = () => {
     const [loginData, setLoginData] = useState({
-        email: "",
+        username: "",
         password: "",
     });
+    
 
     const handleInputChange = (e) => {
         setLoginData((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
         }));
-        console.log(loginData);
+    };
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogin = async () => {
+        const response = await dispatch(loginUserThunk(loginData));
+        console.log("response: ", response)
+        if (response?.payload?.success) {
+            navigate("/");
+        } 
+
     };
 
     return (
@@ -20,13 +35,13 @@ const Login = () => {
             <div className="">
                 <fieldset className="fieldset w-xs bg-base-200 border border-base-300 p-4 rounded-box">
                     <legend className="fieldset-legend text-2xl">Login</legend>
-                    <label className="fieldset-label">Email</label>
+                    <label className="fieldset-label">Username</label>
                     <input
-                        name="email"
+                        name="username"
                         onChange={handleInputChange}
-                        type="email"
+                        type="text"
                         className="input"
-                        placeholder="Email"
+                        placeholder="Username"
                     />
                     <label className="fieldset-label">Password</label>
                     <input
@@ -36,7 +51,12 @@ const Login = () => {
                         className="input"
                         placeholder="Password"
                     />
-                    <button className="btn btn-neutral mt-3">Login</button>
+                    <button
+                        className="btn btn-neutral mt-3"
+                        onClick={handleLogin}
+                    >
+                        Login
+                    </button>
                     <span className="flex gap-1 mt-2">
                         <p className="">Don't have an account? </p>{" "}
                         <Link

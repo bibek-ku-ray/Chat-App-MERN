@@ -1,21 +1,63 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { registerUserThunk } from "../../store/slice/user/user.thunk";
+import toast from "react-hot-toast";
 
 const Signup = () => {
     const [signupData, setSignupData] = useState({
         fullName: "",
+        username: "",
         email: "",
         password: "",
         confirmPassword: "",
+        gender: "",
     });
+
+    const [error, setError] = useState({
+        password: false,
+    })
+
+    const navigate = useNavigate()
 
     const handleInputChange = (e) => {
         setSignupData((prev) => ({
             ...prev,
-            [e.target.name] : e.target.value
-        }))
-    }
-    console.log(signupData)
+            [e.target.name]: e.target.value,
+        }));
+    };
+
+    useEffect(() => {
+        if (signupData.password !== signupData.confirmPassword) {
+            setError((prev) => ({
+                ...prev,
+                password: true,
+            }));
+        } else {
+            setError((prev) => ({
+                ...prev,
+                password: false,
+            }));
+        }
+    }, [signupData.password, signupData.confirmPassword]);
+
+    const dispatch = useDispatch();
+
+    const handleSingUp = async () => {
+        if (error.password) {
+            return toast.error("Passwords don't match", {
+                style: {
+                    color: "#fff",
+                    background: "#09090b",
+                },
+            });
+        } 
+        const response = await dispatch(registerUserThunk(signupData));
+        
+        if(response?.payload?.success) {
+            navigate("/");
+        }
+    };
 
     return (
         <div className="w-full h-screen flex justify-center items-center">
@@ -29,6 +71,14 @@ const Signup = () => {
                         type="text"
                         className="input"
                         placeholder="Full Name"
+                    />
+                    <label className="fieldset-label">Username</label>
+                    <input
+                        name="username"
+                        onChange={handleInputChange}
+                        type="text"
+                        className="input"
+                        placeholder="Username"
                     />
                     <label className="fieldset-label">Email</label>
                     <input
@@ -54,7 +104,27 @@ const Signup = () => {
                         className="input"
                         placeholder="Confirm Password"
                     />
-                    <button className="btn btn-neutral mt-3">Signup</button>
+                    <label className="fieldset-label">Gender</label>
+                    <select
+                        defaultValue=""
+                        className="select"
+                        name="gender"
+                        onChange={handleInputChange}
+                    >
+                        <option value="" disabled={true}>
+                            Select Gender
+                        </option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+
+                    <button
+                        className="btn btn-neutral mt-3"
+                        onClick={handleSingUp}
+                    >
+                        Signup
+                    </button>
+
                     <span className="flex gap-1 mt-2">
                         <p className="">Already have an account? </p>{" "}
                         <Link
