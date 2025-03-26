@@ -48,7 +48,7 @@ export const register = asyncHandler(async (req, res, next) => {
                     Number(process.env.COOKIE_EXPIRES) * 24 * 60 * 60 * 1000
             ),
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: true,
             sameSite: "None",
         })
         .json({
@@ -95,12 +95,12 @@ export const login = asyncHandler(async (req, res, next) => {
                     Number(process.env.COOKIE_EXPIRES) * 24 * 60 * 60 * 1000
             ),
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: true,
             sameSite: "None",
         })
         .json({
             success: true,
-            message: "User LoggedIn",
+            message: "Login successful",
             data: user,
             token: jwtToken,
         });
