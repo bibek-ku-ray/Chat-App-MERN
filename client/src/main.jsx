@@ -8,15 +8,16 @@ import { store } from "./store/store.js";
 import Home from "./pages/home/Home.jsx";
 import Login from "./pages/auth/Login.jsx";
 import Signup from "./pages/auth/Signup.jsx";
+import ProtectedRoute from "./pages/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Home />,
+        element: <ProtectedRoute><Home /></ProtectedRoute>,
     },
     {
         path: "/login",
-        element: <Login />,
+        element: <ProtectedRoute><Login /></ProtectedRoute>,
     },
     {
         path: "/signup",

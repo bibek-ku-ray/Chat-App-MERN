@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUserThunk } from "../../store/slice/user/user.thunk";
 
 const Login = () => {
@@ -9,7 +9,8 @@ const Login = () => {
         username: "",
         password: "",
     });
-    
+
+    const { isAuthenticated } = useSelector((state) => state.user);
 
     const handleInputChange = (e) => {
         setLoginData((prev) => ({
@@ -23,12 +24,17 @@ const Login = () => {
 
     const handleLogin = async () => {
         const response = await dispatch(loginUserThunk(loginData));
-        console.log("response: ", response)
+        console.log("response: ", response);
         if (response?.payload?.success) {
             navigate("/");
-        } 
-
+        }
     };
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/");
+        }
+    }, [isAuthenticated]);
 
     return (
         <div className="w-full h-screen flex justify-center items-center">

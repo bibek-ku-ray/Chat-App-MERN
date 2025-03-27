@@ -10,6 +10,7 @@ export const loginUserThunk = createAsyncThunk(
                 username,
                 password,
             });
+            console.log(response)
             toast.success("User logged in successfully", {
                 style: {
                     color: "#fff",
@@ -81,3 +82,14 @@ export const logoutUserThunk = createAsyncThunk("users/logout", async () => {
         });
     }
 });
+
+export const getUserProfileThunk = createAsyncThunk("users/profile", async () => {
+    try {
+        const response = await axiosInstance.get("/user/get-profile");
+        console.log("Inside getUserProfileThunk", response.data)
+        return response.data;
+    } catch (error) {
+        const errorMessage = error?.response?.data?.errMessage;
+        return rejectWithValue(errorMessage);
+    }
+})

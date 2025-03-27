@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+    getUserProfileThunk,
     loginUserThunk,
     logoutUserThunk,
     registerUserThunk,
@@ -9,7 +10,7 @@ const initialState = {
     isAuthenticated: false,
     userProfile: null,
     buttonLoading: false,
-    screenLoading: false,
+    screenLoading: true,
 };
 
 export const userSlice = createSlice({
@@ -28,6 +29,8 @@ export const userSlice = createSlice({
             })
             .addCase(loginUserThunk.fulfilled, (state, action) => {
                 state.buttonLoading = false;
+                state.isAuthenticated = true;
+                state.screenLoading = false;
                 state.userProfile = action.payload?.data;
             })
             .addCase(loginUserThunk.rejected, (state, action) => {
@@ -40,6 +43,8 @@ export const userSlice = createSlice({
             .addCase(registerUserThunk.fulfilled, (state, action) => {
                 state.buttonLoading = false;
                 state.userProfile = action.payload?.data;
+                state.isAuthenticated = true;
+                state.screenLoading = false;
             })
             .addCase(registerUserThunk.rejected, (state, action) => {
                 state.buttonLoading = false;
@@ -55,7 +60,20 @@ export const userSlice = createSlice({
             })
             .addCase(logoutUserThunk.rejected, (state, action) => {
                 state.buttonLoading = false;
-            });
+            })
+            // User Profile
+            .addCase(getUserProfileThunk.pending, (state, action) => {
+                state.screenLoading = true;
+            })
+            .addCase(getUserProfileThunk.fulfilled, (state, action) => {
+                state.screenLoading = false;
+                state.userProfile = action.payload?.data;
+                console.log("User profile", action.payload?.data);
+                state.isAuthenticated = true;
+            })
+            .addCase(getUserProfileThunk.rejected, (state, action) => {
+                state.screenLoading = false;
+            })
     },
 });
 export const { login } = userSlice.actions;

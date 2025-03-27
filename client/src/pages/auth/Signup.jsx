@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { registerUserThunk } from "../../store/slice/user/user.thunk";
 import toast from "react-hot-toast";
 
@@ -17,6 +17,7 @@ const Signup = () => {
     const [error, setError] = useState({
         password: false,
     })
+    const { isAuthenticated } = useSelector((state) => state.user);
 
     const navigate = useNavigate()
 
@@ -58,6 +59,12 @@ const Signup = () => {
             navigate("/");
         }
     };
+
+    useEffect(() => {
+            if (isAuthenticated) {
+                navigate("/");
+            }
+        }, [isAuthenticated]);
 
     return (
         <div className="w-full h-screen flex justify-center items-center">
