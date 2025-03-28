@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUserThunk } from "../../store/slice/user/user.thunk";
+import { getAllUsersThunk, getUserProfileThunk, registerUserThunk } from "../../store/slice/user/user.thunk";
 import toast from "react-hot-toast";
 
 const Signup = () => {
@@ -56,6 +56,8 @@ const Signup = () => {
         const response = await dispatch(registerUserThunk(signupData));
         
         if(response?.payload?.success) {
+            await dispatch(getUserProfileThunk());
+            await dispatch(getAllUsersThunk());
             navigate("/");
         }
     };

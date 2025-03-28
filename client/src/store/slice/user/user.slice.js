@@ -60,6 +60,8 @@ export const userSlice = createSlice({
                 state.buttonLoading = false;
                 state.userProfile = null;
                 state.isAuthenticated = false;
+                state.selectedUser = null
+                state.allOtherUsers = null
             })
             .addCase(logoutUserThunk.rejected, (state, action) => {
                 state.buttonLoading = false;
@@ -71,7 +73,6 @@ export const userSlice = createSlice({
             .addCase(getUserProfileThunk.fulfilled, (state, action) => {
                 state.screenLoading = false;
                 state.userProfile = action.payload?.data;
-                console.log("User profile", action.payload?.data);
                 state.isAuthenticated = true;
             })
             .addCase(getUserProfileThunk.rejected, (state, action) => {
@@ -84,7 +85,6 @@ export const userSlice = createSlice({
             .addCase(getAllUsersThunk.fulfilled, (state, action) => {
                 state.screenLoading = false;
                 state.allOtherUsers = action.payload?.data;
-                console.log("Other users", action.payload?.data);
             })
             .addCase(getAllUsersThunk.rejected, (state, action) => {
                 state.screenLoading = false;

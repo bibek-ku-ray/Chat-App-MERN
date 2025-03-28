@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUserThunk } from "../../store/slice/user/user.thunk";
+import { getAllUsersThunk, getUserProfileThunk, loginUserThunk } from "../../store/slice/user/user.thunk";
 
 const Login = () => {
     const [loginData, setLoginData] = useState({
@@ -26,6 +26,8 @@ const Login = () => {
         const response = await dispatch(loginUserThunk(loginData));
         console.log("response: ", response);
         if (response?.payload?.success) {
+            await dispatch(getUserProfileThunk());
+            await dispatch(getAllUsersThunk());
             navigate("/");
         }
     };

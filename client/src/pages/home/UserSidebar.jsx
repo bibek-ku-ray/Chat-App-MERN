@@ -31,6 +31,7 @@ const UserSidebar = () => {
                     allOtherUsers.map((user) => (
                         <User
                             key={user?._id}
+                            id = {user._id}
                             fullName={user?.fullName}
                             username={user?.username}
                             avatar={user?.avatar}
@@ -38,10 +39,11 @@ const UserSidebar = () => {
                     ))}
             </div>
             <div className="h-1/12  flex justify-between items-center w-full py-1">
-                <div className="avatar">
+                <div className="avatar flex gap-4 items-center justify-center">
                     <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2">
                         <img src={userProfile?.avatar} />
                     </div>
+                    <h4 className="font-semibold text-md">{userProfile?.fullName}</h4>
                 </div>
                 <button
                     className="btn btn-sm px-5 bg-slate-900"

@@ -8,11 +8,6 @@ const ProtectedRoute = ({ children }) => {
     );
 
     const navigate = useNavigate();
-    console.log(
-        "Inside PR isAuthenticated, screenLoading : ",
-        isAuthenticated,
-        screenLoading
-    );
     useEffect(() => {
         if (!screenLoading && !isAuthenticated) {
             navigate("/login");

@@ -10,7 +10,6 @@ export const loginUserThunk = createAsyncThunk(
                 username,
                 password,
             });
-            console.log(response)
             toast.success("User logged in successfully", {
                 style: {
                     color: "#fff",

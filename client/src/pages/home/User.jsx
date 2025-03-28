@@ -2,11 +2,11 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUser } from "../../store/slice/user/user.slice";
 
-const User = ({ fullName, username, avatar }) => {
+const User = ({ fullName, username, avatar, id }) => {
     const dispatch = useDispatch();
 
     const handleClickHandler = () => {
-        dispatch(setSelectedUser({ fullName, username, avatar }));
+        dispatch(setSelectedUser({ fullName, username, avatar, id }));
     };
 
     const {selectedUser} = useSelector((state) => state.user)
@@ -25,7 +25,7 @@ const User = ({ fullName, username, avatar }) => {
             </div>
             <div>
                 <h2 className="line-clamp-1">{fullName}</h2>
-                <p className="text-sm text-slate-200">{username}</p>
+                <p className="text-sm text-slate-400">{username}</p>
             </div>
         </div>
     );
