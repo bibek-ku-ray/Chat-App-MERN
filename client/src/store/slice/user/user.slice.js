@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+    getAllUsersThunk,
     getUserProfileThunk,
     loginUserThunk,
     logoutUserThunk,
@@ -11,14 +12,16 @@ const initialState = {
     userProfile: null,
     buttonLoading: false,
     screenLoading: true,
+    allOtherUsers: null,
+    selectedUser: null,
 };
 
 export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        login: () => {
-            console.log("Login action");
+        setSelectedUser: (state, action) => {
+            state.selectedUser = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -74,7 +77,19 @@ export const userSlice = createSlice({
             .addCase(getUserProfileThunk.rejected, (state, action) => {
                 state.screenLoading = false;
             })
+            // get all other users
+            .addCase(getAllUsersThunk.pending, (state, action) => {
+                state.screenLoading = true;
+            })
+            .addCase(getAllUsersThunk.fulfilled, (state, action) => {
+                state.screenLoading = false;
+                state.allOtherUsers = action.payload?.data;
+                console.log("Other users", action.payload?.data);
+            })
+            .addCase(getAllUsersThunk.rejected, (state, action) => {
+                state.screenLoading = false;
+            });
     },
 });
-export const { login } = userSlice.actions;
+export const { setSelectedUser } = userSlice.actions;
 export default userSlice.reducer;

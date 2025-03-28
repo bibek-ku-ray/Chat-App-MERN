@@ -62,7 +62,7 @@ export const registerUserThunk = createAsyncThunk(
     }
 );
 
-export const logoutUserThunk = createAsyncThunk("users/logout", async () => {
+export const logoutUserThunk = createAsyncThunk("users/logout", async (_, {rejectWithValue}) => {
     try {
         const response = await axiosInstance.post("/user/logout");
         toast.success("User logged out successfully", {
@@ -80,13 +80,23 @@ export const logoutUserThunk = createAsyncThunk("users/logout", async () => {
                 background: "#09090b",
             },
         });
+        return registerUserThunk(errorMessage)
     }
 });
 
-export const getUserProfileThunk = createAsyncThunk("users/profile", async () => {
+export const getUserProfileThunk = createAsyncThunk("users/profile", async (_, {rejectWithValue}) => {
     try {
         const response = await axiosInstance.get("/user/get-profile");
-        console.log("Inside getUserProfileThunk", response.data)
+        return response.data;
+    } catch (error) {
+        const errorMessage = error?.response?.data?.errMessage;
+        return rejectWithValue(errorMessage);
+    }
+})
+
+export const getAllUsersThunk = createAsyncThunk("users/allUsers", async (_, {rejectWithValue}) => {
+    try {
+        const response = await axiosInstance.get("/user/get-other-users");
         return response.data;
     } catch (error) {
         const errorMessage = error?.response?.data?.errMessage;
