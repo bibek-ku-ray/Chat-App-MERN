@@ -29,7 +29,7 @@ export const sendMessage = asyncHandler(async (req, res, next) => {
     });
 
     if (!conversation) {
-        await Conversation.create({
+        conversation = await Conversation.create({
             participants:[senderId, receiverId]
         });
     }
