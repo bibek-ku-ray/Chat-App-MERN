@@ -24,7 +24,6 @@ const Login = () => {
 
     const handleLogin = async () => {
         const response = await dispatch(loginUserThunk(loginData));
-        console.log("response: ", response);
         if (response?.payload?.success) {
             await dispatch(getUserProfileThunk());
             await dispatch(getAllUsersThunk());

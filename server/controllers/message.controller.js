@@ -2,6 +2,7 @@ import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 import { asyncHandler } from "../utils/asyncHandler.util.js";
 import { errorHandler } from "../utils/errorHandler.util.js";
+import { getSocketId, io } from "../socket/socket.js"
 
 export const sendMessage = asyncHandler(async (req, res, next) => {
     /**
@@ -45,6 +46,10 @@ export const sendMessage = asyncHandler(async (req, res, next) => {
         await conversation.save()
     }
 
+    // socket
+    const socketId = getSocketId(receiverId)
+    io.to(socketId).emit("newMessage", newMessage);
+
     return res.status(200).json({
         success: true,
         message: "Message sent.",
@@ -62,12 +67,9 @@ export const getMessage = asyncHandler(async (req, res, next) => {
         next(new errorHandler("All field required!", 400));
     }
     
-    console.log(myId, otherParticipantId)
     let conversation = await Conversation.findOne({
         participants: { $all: [myId, otherParticipantId] },
     }).populate("messages");
-
-    console.log("conversation: ", conversation);
 
     return res.status(200).json({
         success: true,

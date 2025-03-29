@@ -9,7 +9,10 @@ const User = ({ fullName, username, avatar, id }) => {
         dispatch(setSelectedUser({ fullName, username, avatar, id }));
     };
 
-    const {selectedUser} = useSelector((state) => state.user)
+    const { selectedUser } = useSelector((state) => state.user);
+    const { onlineUsers } = useSelector((state) => state.socket);
+
+    const isUserOnline = onlineUsers?.includes(id);
 
     return (
         <div
@@ -18,7 +21,7 @@ const User = ({ fullName, username, avatar, id }) => {
                 username === selectedUser?.username && "bg-[#181c1c]"
             }`}
         >
-            <div className="avatar avatar-online">
+            <div className={`avatar ${isUserOnline ? "avatar-online" : ""} `}>
                 <div className="w-14 h-14 rounded-full">
                     <img src={avatar} />
                 </div>

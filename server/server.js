@@ -1,5 +1,5 @@
 import express from "express"
-import "dotenv/config";
+import {app, io, httpServer} from "./socket/socket.js"
 import cookieParser from "cookie-parser";
 import cors from "cors"
 
@@ -9,7 +9,7 @@ import { connectDB } from "./db/connection.db.js";
 import userRouter from "./routes/user.route.js";
 import messageRouter from "./routes/message.route.js"
 
-const app = express()
+// const app = express()
 const PORT  = process.env.PORT || 3001
 
 connectDB()
@@ -32,6 +32,6 @@ app.use("/api/v1/message", messageRouter)
 import { errorMiddleware } from "./middlewares/error.middleware.js";
 app.use(errorMiddleware)
 
-app.listen(PORT, ()=>{
+httpServer.listen(PORT, ()=>{
     console.log(`Server running on ${PORT}`)
 })

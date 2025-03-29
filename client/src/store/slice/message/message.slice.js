@@ -7,11 +7,17 @@ const initialState = {
     screenLoading: false,
     messages: {messages: []}
 }
-console.log("initialState.messages", initialState.messages)
 export const messageSlice = createSlice({
-    name: "message", 
+    name: "message",
     initialState,
-    reducers: {},
+    reducers: {
+        setNewMessage : (state, action) => {
+            console.log("message in slice", action.payload)
+            if (Array.isArray(state.messages?.messages)) {
+                state.messages.messages.push(action.payload);
+            }
+        }
+    },
     extraReducers: (builder) => {
         builder
             // send message
@@ -33,8 +39,6 @@ export const messageSlice = createSlice({
                     // Initialize messages array with the new message
                     state.messages.messages = [action.payload?.data];
                 }
-                
-                console.log("send message: ", action.payload)
             })
             .addCase(sendMessageThunk.rejected, (state, action) => {
                 state.buttonLoading = false;
@@ -44,15 +48,14 @@ export const messageSlice = createSlice({
                 state.screenLoading = true;
             })
             .addCase(getMessageThunk.fulfilled, (state, action) => {
-                console.log("get message: ", action.payload?.data);
                 state.messages = action.payload?.data || { messages: [] };
                 state.screenLoading = false;
             })
             .addCase(getMessageThunk.rejected, (state, action) => {
                 state.screenLoading = false;
             });
-    }
-})
+    },
+});
 
-export const {} = messageSlice.actions
+export const { setNewMessage } = messageSlice.actions;
 export default messageSlice.reducer

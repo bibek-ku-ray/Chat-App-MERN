@@ -11,7 +11,6 @@ const SendMessage = () => {
 
     const handleSendMessage = () => {
         if(!message.trim()) return
-        console.log("Message: ", message)
         dispatch(sendMessageThunk({ receiverId: selectedUser.id, message}))
         setMessage("")
     };
